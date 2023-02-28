@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
 
 def index(request):
     return HttpResponse("Страница приложения miso.")
@@ -11,7 +12,7 @@ def categories (request, catid):
 
 def archive(request,year):
     if int(year) > 2023:
-        raise Http404()
+        return redirect('home',permanent=False)
 
     return HttpResponse(f"<h1>Архив по годам</h1><p>{year}</p>")
 
