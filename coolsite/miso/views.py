@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 
 def index(request):
-    return HttpResponse("Страница приложения misoss.")
+    return HttpResponse("Страница приложения miso.")
 
 def categories (request, catid):
     if request.POST:
