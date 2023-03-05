@@ -1,0 +1,15 @@
+{% extends 'miso/base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<ul>
+    {% for p pn posts %}
+    <li>
+        <h2>{{p.title}}</h2>
+        <p>{{p.content}}</p>
+        <hr>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

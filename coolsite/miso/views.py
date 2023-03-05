@@ -1,10 +1,18 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect
 
+from .models import *
+
+menu =["О сайте","Добавить статью","Обратная связь","Войти"]
+
 
 def index(request):
-    return HttpResponse("Страница приложения miso.")
+    posts = Miso.objects.all()
+    return render(request, 'miso/index.html',{'posts':posts,'menu':menu,'title':'Главная страница'})
 
+
+def about(request):
+    return render(request, 'miso/about.html',{'menu':menu,'title':'О сайте'})
 def categories (request, catid):
     if request.POST:
         print(request.POST)
