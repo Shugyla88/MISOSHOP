@@ -166,4 +166,10 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
+/coolsite/settings.py
+/coolsite/__init__.py
+/coolsite/miso/migrations/__init__.py
+/coolsite/miso/__init__.py
+/coolsite/manage.py
+/coolsite/db.sqlite3
 
