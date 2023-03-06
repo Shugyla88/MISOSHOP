@@ -61,7 +61,12 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-
+/coolsite/settings.py
+/coolsite/db.sqlite3
+/coolsite/coolsite/__init__.py
+/coolsite/manage.py
+/coolsite/miso/__init__.py
+/coolsite/miso/migrations/__init__.py
 # Flask stuff:
 instance/
 .webassets-cache
@@ -117,6 +122,8 @@ __pypackages__/
 celerybeat-schedule
 celerybeat.pid
 
+/coolsite/Pipfile
+/coolsite/Pipfile.lock
 # SageMath parsed files
 *.sage.py
 
