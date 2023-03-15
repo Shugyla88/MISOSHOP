@@ -13,6 +13,7 @@ def index(request):
 
 def about(request):
     return render(request, 'miso/about.html',{'menu':menu,'title':'О сайте'})
+
 def categories (request, catid):
     if request.POST:
         print(request.POST)
