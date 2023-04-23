@@ -17,12 +17,13 @@
 			<ul id="mainmenu" class="mainmenu">
 			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
 {% for m in menu %}
-	{% if not forloop.last %}
 			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-	{% else %}
-			<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
-	{% endif %}
 {% endfor %}
+				{% if request.user.is_authenticated %}
+				<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+				<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+				{% endif %}
 			</ul>
 			<div class="clear"></div>
 		</div>
@@ -41,7 +42,7 @@
 {% endif %}
 
 {% for c in cats %}
-{% if c.miso__count > 0 %}
+{% if c.women__count > 0 %}
 	{% if c.pk == cat_selected %}
 		<li class="selected">{{c.name}}</li>
 	{% else %}
@@ -51,6 +52,10 @@
 {% endfor %}
 
 
+		<li class="share">
+		<p>Наш канал</p>
+		<a class="share-yt" href="https://www.youtube.com/channel/UClJzWfGWuGJL2t-3dYKcHTA/playlists" target="_blank" rel="nofollow"></a>
+		</li>
 	</ul>
 </td>
 <!-- Конец Sidebar'а -->
@@ -66,11 +71,11 @@
 {% if page_obj.has_other_pages %}
 <nav class="list-pages">
     <ul>
-        {% if page_obj.has_previous %}
-		<li class="page-num">
-	        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
-        </li>
-		{% endif %}
+{% if page_obj.has_previous %}
+<li class="page-num">
+	<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+</li>
+{% endif %}
 
         {% for p in paginator.page_range %}
 		{% if page_obj.number == p %}
