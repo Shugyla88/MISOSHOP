@@ -4,11 +4,12 @@ html, body {
 	padding: 0;
 	height: 100%;
 	width: 100%;
-	color: #444;
+	color:#444;
+
 }
 
 a {
-	color: #0059b2;
+	color: #494949;
 	text-decoration: none;
 }
 a:hover {
@@ -146,7 +147,7 @@ ul.langitem li a:hover {
 	color: #FDA83D;
 }
 div.button {
-	background: #3F4137;
+	background: #aebd73;
 	max-width: 200px;
 	margin: 0 auto;
 	padding: 5px 20px 5px 20px;
