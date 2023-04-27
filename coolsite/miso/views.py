@@ -1,11 +1,11 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
@@ -24,7 +24,7 @@ class MisoHome(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Miso.objects.filter(is_published=True)
+        return Miso.objects.filter(is_published=True).select_related('cat')
 
 
 # def index(request):
@@ -43,7 +43,6 @@ class MisoHome(DataMixin, ListView):
 def about(request):
     contact_list = Miso.objects.all()
     paginator = Paginator(contact_list, 3)
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'miso/about.html', {'page_obj': page_obj, 'menu': menu, 'title': 'О сайте'})
@@ -73,9 +72,21 @@ class AddPage(LoginRequiredMixin, DataMixin,CreateView):
 #         form = AddPostForm()
 #     return render(request, 'miso/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
 
-def contact(request):
-    return HttpResponse("Обратная связь")
+#def contact(request):
+   # return HttpResponse("Обратная связь")
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'miso/contact.html'
+    success_url = reverse_lazy('home')
 
+    def get_context_data(self, object_list=None ,**kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Обратная связь")
+        return dict(list(context.items())+ list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 #def login(request):
  #   return HttpResponse("Авторизация")
@@ -120,9 +131,12 @@ class MisoCategory(DataMixin,ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Категория - ' + str(context['posts'][0].cat),
-                                      cat_selected=context['posts'][0].cat_id)
+        coc = Category.objects.get(slug=self.kwargs['cat_slug'])
+        c_def = self.get_user_context(title='Категория - ' + str(coc.name),
+                                      cat_selected=coc.pk)
         return dict(list(context.items()) + list(c_def.items()))
+
+
 
 # def show_category(request, cat_id):
 #     posts = Miso.objects.filter(cat_id=cat_id)
@@ -148,6 +162,11 @@ class RegisterUser(DataMixin,CreateView):
         context=super().get_context_data(**kwargs)
         c_def =self.get_user_context(title="Регистрация")
         return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        user=form.save()
+        login(self.request,user)
+        return redirect('home')
 
 
 class LoginUser(DataMixin, LoginView):
